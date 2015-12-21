@@ -5,20 +5,16 @@ describe Chitter do
   include Rack::Test::Methods
 
   def app
-    Chitter.new!
+    Chitter
   end
 
-  it 'has send_email method' do
-    expect(app).to respond_to :send_email
-  end
 
   it 'sends a message to the user when user signs up' do
-    allow_any_instance_of(RestClient::Request).to receive(:execute).with(any_args)
+    expect_any_instance_of(app).to receive(:send_email)
     post '/users', params={email: "example@email.com",
                           username: "Adrian17",
                           password: "adrian1",
                           password_confirmation: 'adrian1'}
-    expect(app).to have_received(:send_email)
   end
 
 end
